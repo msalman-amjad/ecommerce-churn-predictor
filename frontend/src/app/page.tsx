@@ -30,8 +30,8 @@ export default function Home() {
     setLastSubmitted(formData);
 
     try {
-      // Connect to Render backend API (use environment variable with a fallback)
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://ecommerce-churn-predictor-lsvw.onrender.com/";
+      // Connect to Render backend API
+      const API_URL = "https://ecommerce-churn-predictor-lsvw.onrender.com/";
       
       const response = await fetch(API_URL, {
         method: "POST",
