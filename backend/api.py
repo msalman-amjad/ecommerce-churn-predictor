@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
+import os
 
 # ACT 1: INITIALIZE THE API AND LOAD THE MODEL
 app = FastAPI()
@@ -13,8 +14,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-print("Loading saved model...")
-model = joblib.load('backend/churn_model.pkl')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "churn_model.pkl")
+
+print(f"Loading model from: {MODEL_PATH}")
+model = joblib.load(MODEL_PATH)
+
 
 # ACT 2: DEFINE THE INPUT DATA STRUCTURE
 # This forces the frontend to send exactly these three pieces of data
