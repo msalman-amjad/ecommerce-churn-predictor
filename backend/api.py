@@ -1,0 +1,33 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+import pandas as pd
+
+# ACT 1: INITIALIZE THE API AND LOAD THE MODEL
+app = FastAPI()
+print("Loading saved model...")
+model = joblib.load('backend/churn_model.pkl')
+
+# ACT 2: DEFINE THE INPUT DATA STRUCTURE
+# This forces the frontend to send exactly these three pieces of data
+class CustomerData(BaseModel):
+    days_since_purchase: float
+    total_spend: float
+    subscription_type: int
+
+# ACT 3: CREATE THE PREDICTION ENDPOINT
+# When the frontend sends a POST request to this URL, this function runs
+@app.post("/predict")
+def predict_churn(data: CustomerData):
+    # Convert the incoming web data into a Pandas DataFrame that the model can read
+    input_data = pd.DataFrame([{
+        'days_since_purchase': data.days_since_purchase,
+        'total_spend': data.total_spend,
+        'subscription_type': data.subscription_type
+    }])
+    
+    # Feed the data into the loaded pickle file to get a prediction
+    prediction = model.predict(input_data)
+    
+    # Return a JSON response back to the frontend (0 = will stay, 1 = will churn)
+    return {"churn_prediction": int(prediction[0])}
