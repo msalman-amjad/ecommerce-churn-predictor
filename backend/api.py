@@ -28,6 +28,14 @@ class CustomerData(BaseModel):
     total_spend: float
     subscription_type: int
 
+@app.get("/")
+def health_check():
+    return {
+        "status": "online",
+        "message": "E-Commerce Churn Prediction API is running!",
+        "docs": "/docs"
+    }
+
 # ACT 3: CREATE THE PREDICTION ENDPOINT
 # When the frontend sends a POST request to this URL, this function runs
 @app.post("/predict")
