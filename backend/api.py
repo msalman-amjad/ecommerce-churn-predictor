@@ -1,10 +1,18 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 
 # ACT 1: INITIALIZE THE API AND LOAD THE MODEL
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 print("Loading saved model...")
 model = joblib.load('backend/churn_model.pkl')
 
