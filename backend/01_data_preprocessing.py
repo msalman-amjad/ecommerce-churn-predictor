@@ -1,5 +1,5 @@
 import pandas as pd
-df=pd.read_csv('backend/dataset.csv')
+df=pd.read_csv('backend/dataset_5000.csv')
 print (df.head())
 
 ### ACT 2: The Inspection ###
